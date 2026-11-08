@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linear Algebra ✨ كلية الذكاء الاصطناعي</title>
+<style>
+:root{
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg1:#fbf8ff;--bg2:#f1ecff;--bg3:#ffeefa;--card:#ffffffcc;--ink:#2a2147;--mute:#6f6692;
+  --p:#8b5cf6;--p2:#6d3fe0;--pink:#ec6fb4;--blue:#5b9dff;--gold:#c9a227;--silver:#b8bfd0;--line:#e3dcf7;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg1:#150f2a;--bg2:#1c1438;--bg3:#2a1237;--card:#241a4acc;--ink:#f3eeff;--mute:#b3a8d9;
+  --p:#a78bfa;--p2:#c4b0ff;--pink:#f58ac6;--blue:#7db2ff;--gold:#e8c65a;--silver:#9aa3bd;--line:#3a2d6b;}}
+:root[data-theme="dark"]{--bg1:#150f2a;--bg2:#1c1438;--bg3:#2a1237;--card:#241a4acc;--ink:#f3eeff;--mute:#b3a8d9;--p:#a78bfa;--p2:#c4b0ff;--pink:#f58ac6;--blue:#7db2ff;--gold:#e8c65a;--silver:#9aa3bd;--line:#3a2d6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Tajawal","Segoe UI",Tahoma,sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3));background-attachment:fixed;position:relative;overflow-x:hidden}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.stars span{position:absolute;color:var(--gold);opacity:.55;animation:tw 4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:.8;transform:scale(1.15)}}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:18px 14px 40px}
+header{text-align:center;padding:18px 0 8px}
+h1{margin:0;font-size:1.7rem;background:linear-gradient(90deg,var(--p),var(--pink),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mute);margin:6px 0 0;font-size:.95rem}
+nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+@media(min-width:620px){nav{grid-template-columns:repeat(4,1fr)}}
+nav button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:11px 6px;border-radius:14px;font:inherit;font-weight:600;cursor:pointer;backdrop-filter:blur(6px)}
+nav button.on{background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;border-color:transparent;box-shadow:0 4px 14px #8b5cf655}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;backdrop-filter:blur(8px);box-shadow:0 2px 12px #8b5cf61a}
+.card.gold{border-image:none;border-color:var(--gold)}
+label{display:block;font-weight:600;margin:10px 0 6px}
+textarea,select,input{width:100%;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:12px;padding:10px}
+textarea{min-height:120px;resize:vertical}
+textarea:focus,select:focus,input:focus{outline:none;border-color:var(--p)}
+option{color:#222}
+.go{margin-top:14px;width:100%;border:0;border-radius:14px;padding:12px;font:inherit;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--p),var(--pink))}
+.go:disabled{opacity:.5}
+.row{display:flex;gap:12px;align-items:flex-start}
+.body{flex:1;min-width:0}
+.txt{white-space:pre-wrap;word-break:break-word;line-height:1.7}
+.meta{color:var(--mute);font-size:.82rem;margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{background:linear-gradient(135deg,#8b5cf622,#5b9dff22);border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--p2);font-weight:600}
+.vote{flex:none;min-width:58px;border:1.5px solid var(--silver);background:transparent;color:var(--ink);border-radius:14px;padding:8px 6px;font:inherit;cursor:pointer;text-align:center;line-height:1.2}
+.vote b{display:block;font-size:1.15rem}
+.vote.on{border-color:var(--gold);background:linear-gradient(135deg,#e8c65a33,#ec6fb433);color:var(--ink)}
+.del{background:none;border:0;color:var(--pink);cursor:pointer;font:inherit;font-size:.8rem}
+.tools{display:flex;gap:8px;margin-bottom:12px}
+.tools button{flex:1;border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px;border-radius:12px;font:inherit;cursor:pointer}
+.tools button.on{border-color:var(--p);color:var(--p2);font-weight:700}
+.empty,.note{text-align:center;color:var(--mute);padding:22px 8px}
+.note.err{color:var(--pink)}
+.ok{color:var(--blue);text-align:center;font-weight:700;margin-top:10px;min-height:1.4em}
+footer{text-align:center;color:var(--mute);font-size:.8rem;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="wrap">
+  <header>
+    <h1>✨ Linear Algebra ✨</h1>
+    <p class="sub">كلية الذكاء الاصطناعي · Delta University</p>
+  </header>
+  <nav id="nav">
+    <button data-v="submit">✨ اكتب مشكلتك</button>
+    <button data-v="problems">✨ مشاكل الدفعة</button>
+    <button data-v="suggest">✨ اقتراح</button>
+    <button data-v="ideas">✨ المقترحات</button>
+  </nav>
+  <div id="status" class="note"></div>
+  <main id="view"></main>
+  <footer>✨ مفيش سؤال غبي، اللي متلخبط فيه غيرك كمان ✨</footer>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+// ====== الصقي هنا إعدادات Firebase بتاعتك (من خطوة 3 في الشرح) ======
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCJbI675Aj5R4d0oyzlZfq-D47JZS-W-t8",
+  authDomain: "linear-algebra-hub.firebaseapp.com",
+  projectId: "linear-algebra-hub",
+  appId: "1:45566341458:web:3de7fa369d2d9d23da0a8b"
+};
+// ====================================================================
+(function(){
+  var TOPICS=["Matrices & Systems","Gaussian elimination","Determinants","Vector spaces","Subspaces","Linear independence & basis","Dimension & rank","Linear transformations","Eigenvalues & eigenvectors","Diagonalization","Inner product & orthogonality","أخرى"];
+  var S={view:"submit",problems:[],ideas:[],uid:null,sort:"votes",loaded:{p:false,i:false},db:null};
+  var $=function(id){return document.getElementById(id)};
+  var view=$("view"),status=$("status");
+
+  var st=$("stars");
+  for(var i=0;i<22;i++){var s=document.createElement("span");s.textContent="✦";
+    s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";
+    s.style.fontSize=(10+Math.random()*16)+"px";s.style.animationDelay=(Math.random()*4)+"s";
+    s.style.color=["var(--gold)","var(--pink)","var(--blue)","var(--silver)"][i%4];st.appendChild(s)}
+
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  function ago(ms){var d=(Date.now()-ms)/1000;if(d<60)return"دلوقتي";if(d<3600)return"من "+Math.floor(d/60)+" دقيقة";if(d<86400)return"من "+Math.floor(d/3600)+" ساعة";return"من "+Math.floor(d/86400)+" يوم"}
+  function err(m){status.textContent=m;status.className="note err"}
+
+  function route(){var h=(location.hash||"").slice(1);if(["submit","problems","suggest","ideas"].indexOf(h)>-1)S.view=h;render()}
+  window.addEventListener("hashchange",route);
+  $("nav").addEventListener("click",function(e){var b=e.target.closest("button");if(b){location.hash=b.dataset.v}});
+
+  function render(){
+    Array.prototype.forEach.call($("nav").children,function(b){b.classList.toggle("on",b.dataset.v===S.view)});
+    view.textContent="";
+    if(!S.db)return;
+    if(S.view==="submit")form("problems","اكتب المشكلة أو النقطة اللي مش فاهمها أو متلخبط فيها","مثال: مش فاهم الفرق بين الـ span والـ basis…",true);
+    else if(S.view==="suggest")form("suggestions","اكتب اقتراحك للمادة أو للمذاكرة أو للموقع","مثال: نعمل سيشن حل مسائل قبل الميد تيرم…",false);
+    else if(S.view==="problems")list(true);
+    else list(false);
+  }
+
+  function form(coll,title,ph,withTopic){
+    var c=el("div","card");
+    c.appendChild(el("h3",null,"✨ "+title));
+    var sel=null;
+    if(withTopic){c.appendChild(el("label",null,"الموضوع"));sel=el("select");
+      TOPICS.forEach(function(t){var o=el("option",null,t);o.value=t;sel.appendChild(o)});c.appendChild(sel)}
+    c.appendChild(el("label",null,withTopic?"وصف المشكلة":"اقتراحك"));
+    var ta=el("textarea");ta.placeholder=ph;ta.maxLength=1500;c.appendChild(ta);
+    var go=el("button","go","✨ ابعت");c.appendChild(go);
+    var ok=el("div","ok");c.appendChild(ok);
+    go.onclick=function(){
+      var t=ta.value.trim();if(t.length<3){ok.textContent="اكتب كلمتين على الأقل ✨";return}
+      go.disabled=true;
+      var d={text:t,createdAt:Date.now()};
+      if(withTopic){d.topic=sel.value;d.voters=[]}
+      S.db.collection(coll).add(d).then(function(){
+        ta.value="";ok.textContent=withTopic?"وصلت! شوفها في «مشاكل الدفعة» ✨":"وصل اقتراحك! شوفه في «المقترحات» ✨";go.disabled=false;
+      }).catch(function(){ok.textContent="حصلت مشكلة، جرب تاني.";go.disabled=false});
+    };
+    view.appendChild(c);
+  }
+
+  function list(isProblems){
+    var ready=isProblems?S.loaded.p:S.loaded.i;
+    if(isProblems){
+      var tools=el("div","tools");
+      [["votes","الأكتر تأييد ✨"],["new","الأحدث"]].forEach(function(o){
+        var b=el("button",S.sort===o[0]?"on":"",o[1]);b.onclick=function(){S.sort=o[0];render()};tools.appendChild(b)});
+      view.appendChild(tools);
+    }
+    if(!ready){view.appendChild(el("div","empty","بنحمّل… ✨"));return}
+    var arr=(isProblems?S.problems:S.ideas).slice();
+    var n=function(x){return(x.voters||[]).length};
+    if(isProblems&&S.sort==="votes")arr.sort(function(a,b){return n(b)-n(a)||b.createdAt-a.createdAt});
+    else arr.sort(function(a,b){return b.createdAt-a.createdAt});
+    if(!arr.length){view.appendChild(el("div","empty",isProblems?"لسه مفيش مشاكل. كن أول واحد يكتب ✨":"لسه مفيش مقترحات ✨"));return}
+    arr.forEach(function(it){
+      var c=el("div","card"+(isProblems&&n(it)>=5?" gold":""));
+      var r=el("div","row"),b=el("div","body");
+      b.appendChild(el("div","txt",it.text));
+      var m=el("div","meta");
+      if(it.topic)m.appendChild(el("span","tag",it.topic));
+      m.appendChild(el("span",null,ago(it.createdAt)));
+      b.appendChild(m);r.appendChild(b);
+      if(isProblems){
+        var mine=(it.voters||[]).indexOf(S.uid)>-1;
+        var v=el("button","vote"+(mine?" on":""));
+        v.appendChild(el("span",null,"✨ +1"));v.appendChild(el("b",null,String(n(it))));
+        v.title="أنا كمان متلخبط في دي";
+        v.onclick=function(){
+          var F=firebase.firestore.FieldValue;
+          S.db.collection("problems").doc(it.id).update({voters:mine?F.arrayRemove(S.uid):F.arrayUnion(S.uid)}).catch(function(){err("مقدرتش أسجل التأييد، جرب تاني.")});
+        };
+        r.appendChild(v);
+      }
+      c.appendChild(r);view.appendChild(c);
+    });
+  }
+
+  function sub(coll,key,flag){
+    S.db.collection(coll).orderBy("createdAt","desc").limit(500).onSnapshot(function(q){
+      S.loaded[flag]=true;
+      S[key]=q.docs.map(function(d){var x=d.data();return{id:d.id,text:String(x.text||""),topic:x.topic,createdAt:x.createdAt||0,voters:x.voters||[]}});
+      if(S.loaded.p&&S.loaded.i)status.textContent="";
+      render();
+    },function(){err("مقدرتش أقرأ البيانات. اتأكد من إعدادات Firebase.")});
+  }
+
+  function boot(){
+    if(!window.firebase||FIREBASE_CONFIG.apiKey==="PASTE_HERE"){err("لسه محتاج تلصقي إعدادات Firebase في الملف (خطوة 3).");return}
+    status.textContent="بنحمّل… ✨";
+    firebase.initializeApp(FIREBASE_CONFIG);
+    S.db=firebase.firestore();
+    firebase.auth().signInAnonymously().catch(function(){err("فعّلي Anonymous في Authentication (خطوة 2).")});
+    firebase.auth().onAuthStateChanged(function(u){
+      if(!u||S.uid)return;
+      S.uid=u.uid;sub("problems","problems","p");sub("suggestions","ideas","i");render();
+    });
+  }
+  route();boot();
+})();
+</script>
+</body>
+</html>
